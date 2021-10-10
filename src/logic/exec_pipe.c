@@ -72,6 +72,7 @@ void	pid_zero(char ***cmd, t_env *env, int fdd, int *fd)
 	dup2(fdd, 0);
 	if (*(cmd + 1) != NULL)
 		dup2(fd[1], 1);
+	close(fdd);
 	close(fd[0]);
 	close(fd[1]);
 	if (ft_strnstr(&(*cmd)[0][0], "./", 2))
@@ -118,6 +119,8 @@ void	pipeline(char ***cmd, t_env *env)
 		else
 		{
 			pid_nonzero(env, status, fd);
+			if (fdd != NULL)
+				close(fdd);
 			fdd = fd[0];
 			cmd++;
 		}
